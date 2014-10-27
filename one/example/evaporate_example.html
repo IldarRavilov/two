@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+   <head>
+    
+      <title>Evaporate Example</title>
+    
+      <style>
+         
+      </style>
+    
+   
+      <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+      <script language="javascript" type="text/javascript" src="../evaporate.js"></script>
+   
+   </head>
+   <body>
+      
+      <div>
+         <input type="file" id="files"  multiple />
+      <div>
+            
+      
+      <script language="javascript">
+      
+         var files;
+         
+         var _e_ = new Evaporate({
+            signerUrl: 'http://stage.govermedia.com:3000/signin',
+            aws_key: 'AKIAIUVLFQMXCGR6V5IQ',
+            bucket: 'gm-s',
+            aws_url: 'http://s3-eu-west-1.amazonaws.com'
+         });
+      
+         $('#files').change(function(evt){
+            files = evt.target.files;
+            
+            for (var i = 0; i < files.length; i++){
+            
+               _e_.add({
+                  name: 'test_' + Math.floor(1000000000*Math.random()),
+                  file: files[i],
+                  notSignedHeadersAtInitiate: {
+                     'Cache-Control': 'max-age=3600'
+                  },
+                  xAmzHeadersAtInitiate : {
+                     'x-amz-acl': 'public-read'
+                  },
+                  signParams: {
+                     foo: 'bar'
+                  },
+                  signingHeaders:{
+                     foo: 'signbar'
+                  },
+                  complete: function(){
+                     console.log('complete................yay!');
+                  },
+                  progress: function(progress){
+                     console.log('making progress: ' + progress);
+                  }
+               });
+            }
+            
+            $(evt.target).val('');
+            
+         });
+      
+      </script>
+
+   </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
